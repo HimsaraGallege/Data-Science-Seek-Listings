@@ -1,0 +1,134 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "repeat": [
+        "2019",
+        "2020",
+        "2021"
+    ],
+    "columns": 3,
+    "spec": {
+        "projection": {
+            "type": "equirectangular"
+        },
+        "width": 400,
+        "height": 300,
+        "layer": [
+            {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/HimsaraGallege/testRepo/main/Australian-states.topojson",
+                    "format": { "type": "topojson", "feature": "Australian-states" }
+                },
+                "transform": [
+                    {
+                        "calculate": "'Data is not available in' + datum.State",
+                        "as": "note"
+                    }
+                ],
+                "mark": {
+                    "type": "geoshape",
+                    "fill": "#ddd",
+                    "stroke": "white",
+                    "strokeWidth": 1
+                },
+                "encoding": {
+                    "tooltip": {
+                        "field": "note"
+                    }
+                }
+            },
+            {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/HimsaraGallege/testRepo/main/StateCountSmallMultiple.csv"
+                },
+                "transform": [
+                    {
+                        "lookup": "state",
+                        "from": {
+                            "data": {
+                                "url": "https://raw.githubusercontent.com/HimsaraGallege/testRepo/main/Australian-states.topojson",
+                                "format": {
+                                    "type": "topojson",
+                                    "feature": "Australian-states"
+                                }
+                            },
+                            "key": "properties.STATE_NAME"
+                        },
+                        "as": "geo"
+                    }
+                ],
+                "mark": {
+                    "type": "geoshape",
+                    "stroke": "#fff",
+                    "strokeWidth": 0.5
+                },
+                "encoding": {
+                    "shape": {
+                        "field": "geo",
+                        "type": "geojson"
+                    },
+                    "color": {
+                        "field": {
+                            "repeat": "repeat"
+                        },
+                        "type": "quantitative",
+                        "scale": {
+                            "domain": [
+                                  50,
+                                  100,
+                                  200,
+                                  300,
+                                  400
+                              ],
+                            "scheme": "lighttealblue"
+                        },
+                        "legend": {
+                            "format": ".2s",
+                            "title": "Listings"
+                        }
+                    },
+                    "tooltip": [
+                        {
+                            "field": "state",
+                            "type": "nominal",
+                            "title": "state"
+                        },
+                        {
+                            "field": {
+                                "repeat": "repeat"
+                            },
+                            "type": "quantitative",
+                            "title": "Listings",
+                            "format": ","
+                        }
+                    ]
+                }
+            },
+            {
+                "data": {
+                    "values": [
+                        {
+                            "2019": "Year: 2019",
+                            "2020": "Year: 2020",
+                            "2021": "Year: 2021"
+                        }
+                    ]
+                },
+                "mark": {
+                    "type": "text",
+                    "align": "right",
+                    "baseline": "bottom",
+                    "x": "width",
+                    "y": 0
+                },
+                "encoding": {
+                    "text": {
+                        "field": {
+                            "repeat": "repeat"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "config": {}
+}

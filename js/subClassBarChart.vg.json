@@ -1,0 +1,48 @@
+{
+  "height": 300,
+  "data": { "url": "https://raw.githubusercontent.com/HimsaraGallege/testRepo/main/jobClassification_subClassification_Count.csv"},
+  "params": [
+      {
+          "name": "industry_select",
+          "value": ["Banking & Financial Services"],
+          "bind": {
+              "input": "select",
+              "options": ["Science & Technology", "Information & Communication Technology", "Banking & Financial Services"],
+              "name": "Industry: "
+          }
+      }
+],
+  "transform": [{ "filter": "datum.jobClassification == industry_select" }],
+  "mark": "bar",
+  "width": 400,
+  "encoding": {
+    "y": {"field": "jobSubClassification",
+          "sort": "x",
+          "title": "Classification"},
+          "axis": {
+              "domain": false,
+              "ticks": false,
+              "labelAngle": 0,
+              "labelPadding": 4
+          },
+    "x": {
+      "aggregate": "sum", "field": "Count",
+      "title": "Listings"
+    },
+    "text": {"field": "Count", "type": "nominal", "aggregate": "sum"},
+    "tooltip": [
+      {"title": "jobSubClassification","field": "jobSubClassification", "type": "nominal"},
+      {"title": "Listings", "field": "Count", "type": "quantitative", "aggregate": "sum"}
+    ]
+  },
+  "layer": [{
+    "mark": "bar"
+  }, {
+    "mark": {
+      "type": "text",
+      "align": "left",
+      "baseline": "middle",
+      "dx": 7
+    }
+  }]
+}

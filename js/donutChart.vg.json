@@ -1,0 +1,24 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A simple donut chart with embedded data.",
+    "width": 500,
+    "height": 250,
+    "data": { "url":"https://raw.githubusercontent.com/HimsaraGallege/testRepo/main/Year_workType_Count.csv"},
+    "params": [
+        {
+            "name": "year_select",
+            "value": ["All"],
+            "bind": {
+                "input": "select",
+                "options": [ "2019", "2020", "2021", "All"],
+                "name": "Year: "
+            }
+        }
+  ],
+  "transform": [{ "filter": "datum.ListingYear == year_select" }],
+    "mark": {"type": "arc", "innerRadius": 50},
+    "encoding": {
+      "theta": {"field": "Count", "type": "quantitative", "aggregate": "sum"},
+      "color": {"field": "workType", "type": "nominal", "title": "Work Type"}
+    }
+  }
