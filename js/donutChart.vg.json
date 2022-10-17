@@ -1,24 +1,68 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "A simple donut chart with embedded data.",
-    "width": 500,
-    "height": 250,
-    "data": { "url":"https://raw.githubusercontent.com/HimsaraGallege/testRepo/main/Year_workType_Count.csv"},
-    "params": [
-        {
-            "name": "year_select",
-            "value": ["All"],
-            "bind": {
-                "input": "select",
-                "options": [ "2019", "2020", "2021", "All"],
-                "name": "Year: "
-            }
-        }
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 300,
+  "data": {
+      "url": "https://raw.githubusercontent.com/HimsaraGallege/testRepo/main/ListingYear_WorkType_Final.csv"
+  },
+  "params": [
+      {
+          "name": "year_select",
+          "value": ["All"],
+          "bind": {
+              "input": "select",
+              "options": [ "2019", "2020", "2021", "All"],
+              "name": "Year: "
+          }
+      }
+],
+"transform": [{ "filter": "datum.ListingYear == year_select" }],
+  "layer": [
+      {
+          "mark": {
+              "type": "arc",
+              "innerRadius": 20,
+              "stroke": "#fff"
+          }
+      },
+      {
+          "mark": {
+              "type": "text",
+              "radiusOffset": 10
+          }
+      }
   ],
-  "transform": [{ "filter": "datum.ListingYear == year_select" }],
-    "mark": {"type": "arc", "innerRadius": 50},
-    "encoding": {
-      "theta": {"field": "Count", "type": "quantitative", "aggregate": "sum"},
-      "color": {"field": "workType", "type": "nominal", "title": "Work Type"}
-    }
+  "encoding": {
+      "theta": {
+          "field": "Count",
+          "type": "quantitative",
+          "stack": true
+      },
+      "radius": {
+          "field": "Count",
+          "scale": {
+              "type": "sqrt",
+              "zero": true,
+              "rangeMin": 20
+          }
+      },
+      "color": {
+          "field": "workType",
+          "type": "nominal",
+          "scale": {"scheme": "category20"}
+      },
+      "tooltip": [
+          {
+              "field": "workType",
+              "type": "nominal",
+              "title": "Work Type"
+          },
+          {
+              "field": "Count",
+              "type": "quantitative",
+              "title": "Listings",
+              "format": ","
+          }
+      ]
   }
+}
